@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Weather Dashboard</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-default light-mode">
+    <!-- Dynamic Background Elements -->
+    <div class="weather-background"></div>
+
+    <div class="app-container glass-container">
+        <!-- Navbar -->
+        <header class="navbar">
+            <div class="logo">
+                <i class="fa-solid fa-cloud-sun-rain floating"></i>
+                <span>SkyCast</span>
+            </div>
+            
+            <div class="search-container">
+                <div class="search-box glass-card">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="search-input" placeholder="Search city...">
+                    <button id="search-btn">Search</button>
+                </div>
+                <!-- Dropdown for History & Favorites -->
+                <div class="search-dropdown glass-card hidden" id="search-dropdown">
+                    <div class="dropdown-section">
+                        <h4>Favorites</h4>
+                        <ul id="favorites-list"></ul>
+                    </div>
+                    <div class="dropdown-section">
+                        <h4>Recent Searches</h4>
+                        <ul id="history-list"></ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-controls">
+                <button id="location-btn" class="icon-btn glass-btn tooltip" data-tooltip="Use Current Location">
+                    <i class="fa-solid fa-location-crosshairs"></i>
+                </button>
+                <button id="refresh-btn" class="icon-btn glass-btn tooltip" data-tooltip="Refresh Data">
+                    <i class="fa-solid fa-rotate-right"></i>
+                </button>
+                <button id="fav-btn" class="icon-btn glass-btn tooltip" data-tooltip="Add to Favorites">
+                    <i class="fa-regular fa-heart"></i>
+                </button>
+                <div class="toggle-container glass-card">
+                    <button id="unit-c" class="unit-btn active">°C</button>
+                    <button id="unit-f" class="unit-btn">°F</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Dashboard -->
+        <main class="dashboard">
+            <!-- Loading State -->
+            <div id="loader" class="loader-container hidden">
+                <div class="spinner"></div>
+                <p>Fetching weather data...</p>
+            </div>
+
+            <!-- Error State -->
+            <div id="error-message" class="error-container glass-card hidden">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <p id="error-text">City not found.</p>
+            </div>
+
+            <!-- Content Grid -->
+            <div id="weather-content" class="weather-grid fade-in">
+                
+                <!-- Hero Section (Left Column) -->
+                <section class="hero-card glass-card">
+                    <div class="hero-header">
+                        <div class="location-info">
+                            <h1 id="city-name">--</h1>
+                            <p id="date-time">--</p>
+                        </div>
+                    </div>
+                    <div class="hero-body">
+                        <div class="temp-wrapper">
+                            <img id="weather-icon" src="" alt="Weather Icon" class="main-icon hidden floating">
+                            <div class="temp-info">
+                                <h2 id="current-temp">--°</h2>
+                                <p id="weather-desc">--</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-footer">
+                        <p><i class="fa-solid fa-temperature-half"></i> Feels like: <span id="feels-like">--°</span></p>
+                    </div>
+                </section>
+
+                <!-- Information Cards (Right Column) -->
+                <section class="info-grid">
+                    <div class="info-card glass-card slide-up" style="--delay: 0.1s">
+                        <i class="fa-solid fa-droplet"></i>
+                        <div>
+                            <p class="label">Humidity</p>
+                            <h3 id="humidity">--%</h3>
+                        </div>
+                    </div>
+                    <div class="info-card glass-card slide-up" style="--delay: 0.2s">
+                        <i class="fa-solid fa-wind"></i>
+                        <div>
+                            <p class="label">Wind Speed</p>
+                            <h3 id="wind-speed">--</h3>
+                        </div>
+                    </div>
+                    <div class="info-card glass-card slide-up" style="--delay: 0.3s">
+                        <i class="fa-solid fa-gauge-high"></i>
+                        <div>
+                            <p class="label">Pressure</p>
+                            <h3 id="pressure">-- hPa</h3>
+                        </div>
+                    </div>
+                    <div class="info-card glass-card slide-up" style="--delay: 0.4s">
+                        <i class="fa-solid fa-eye"></i>
+                        <div>
+                            <p class="label">Visibility</p>
+                            <h3 id="visibility">-- km</h3>
+                        </div>
+                    </div>
+                    <div class="info-card glass-card slide-up" style="--delay: 0.5s">
+                        <i class="fa-solid fa-leaf"></i>
+                        <div>
+                            <p class="label">AQI</p>
+                            <h3 id="aqi">--</h3>
+                        </div>
+                    </div>
+                    <div class="info-card glass-card slide-up" style="--delay: 0.6s">
+                        <i class="fa-solid fa-cloud-rain"></i>
+                        <div>
+                            <p class="label">Cloud Cover</p>
+                            <h3 id="cloud-cover">--%</h3>
+                        </div>
+                    </div>
+                    <div class="info-card glass-card slide-up" style="--delay: 0.7s">
+                        <i class="fa-solid fa-sun"></i>
+                        <div>
+                            <p class="label">Sunrise</p>
+                            <h3 id="sunrise">--:--</h3>
+                        </div>
+                    </div>
+                    <div class="info-card glass-card slide-up" style="--delay: 0.8s">
+                        <i class="fa-solid fa-moon"></i>
+                        <div>
+                            <p class="label">Sunset</p>
+                            <h3 id="sunset">--:--</h3>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Forecast Section -->
+                <section class="forecast-section">
+                    <div class="forecast-container glass-card slide-up" style="--delay: 0.9s">
+                        <h3><i class="fa-regular fa-clock"></i> 24-Hour Forecast</h3>
+                        <div class="horizontal-scroll" id="hourly-forecast">
+                            <!-- Injected via JS -->
+                        </div>
+                    </div>
+
+                    <div class="forecast-container glass-card slide-up" style="--delay: 1.0s">
+                        <h3><i class="fa-regular fa-calendar-days"></i> 5-Day Forecast</h3>
+                        <div class="horizontal-scroll" id="daily-forecast">
+                            <!-- Injected via JS -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <p>Powered by <a href="https://openweathermap.org/" target="_blank">OpenWeatherMap API</a></p>
+            <p>Developed with ❤️ | <a href="#" target="_blank">GitHub</a></p>
+        </footer>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
