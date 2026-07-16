@@ -20,4 +20,4 @@ A modern, responsive, and production-ready Weather Application built with HTML5,
 2. Go to [OpenWeatherMap](https://openweathermap.org/) and create a free account to obtain an API Key.
 3. Open `config.js` and replace `"YOUR_API_KEY"` with your actual API key:
    ```javascript
-   const API_KEY = "1a2b3c4d5e...";
+   const API_KEY = "YOUR_API_KEY";
